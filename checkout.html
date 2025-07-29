@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stripe Checkout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    body { background: #f6f9fc; font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+    .container { background: #fff; padding: 2rem 2.5rem; border-radius: 12px; box-shadow: 0 8px 32px rgba(50,50,93,0.07), 0 1.5px 3px rgba(0,0,0,0.07); }
+    button { background: linear-gradient(90deg, #635bff 0%, #6c47ff 100%); color: #fff; border: none; border-radius: 6px; padding: 0.9rem 2rem; font-size: 1.1rem; font-weight: 600; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Checkout</h2>
+    <p>Amount: $50.00 USD</p>
+    <button id="checkout-button">Pay with Card</button>
+  </div>
+  <script>
+    const stripe = Stripe('YOUR_PUBLISHABLE_KEY'); // Replace with your real key
+    document.getElementById('checkout-button').addEventListener('click', async () => {
+      const response = await fetch('http://localhost:5000/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: 5000 })
+      });
+      const session = await response.json();
+      if (session.url) {
+        window.location = session.url;
+      } else {
+        alert('Error: ' + (session.error || 'Could not create session'));
+      }
+    });
+  </script>
+</body>
+</html>

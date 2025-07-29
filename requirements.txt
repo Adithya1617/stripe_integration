@@ -1,0 +1,6 @@
+flask
+stripe
+python-dotenv
+pymysql
+cryptography
+flask-dance[google] 
