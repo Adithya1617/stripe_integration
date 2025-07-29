@@ -8,7 +8,7 @@ from flask_cors import CORS
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["http://localhost:3000", "http://127.0.0.1:3000", os.environ.get("FRONTEND_URL")])
 
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
@@ -101,4 +101,5 @@ def stripe_webhook():
     return "", 200
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
