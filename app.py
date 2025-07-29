@@ -8,7 +8,14 @@ from flask_cors import CORS
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:3000", "http://127.0.0.1:3000", os.environ.get("FRONTEND_URL")])
+origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000"
+]
+frontend_url = os.environ.get("FRONTEND_URL")
+if frontend_url:
+    origins.append(frontend_url)
+CORS(app, origins=origins)
 
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 
