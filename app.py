@@ -48,8 +48,11 @@ def create_payment():
 def create_checkout_session():
     try:
         data = request.json
+        print("[LOG] Incoming data for /create-checkout-session:", data)
+        print("[LOG] Stripe API Key:", stripe.api_key)
         amount = data.get("amount")
         if not amount:
+            print("[LOG] No amount provided.")
             return jsonify({"error": "Amount is required"}), 400
         session = stripe.checkout.Session.create(
             payment_method_types=["card"],
@@ -62,11 +65,13 @@ def create_checkout_session():
                 "quantity": 1,
             }],
             mode="payment",
-            success_url="https://edtech-six-navy.vercel.app/success",
-            cancel_url="https://edtech-six-navy.vercel.app/cancel",
+            success_url="http://localhost:8000/success.html",
+            cancel_url="http://localhost:8000/cancel.html",
         )
+        print("[LOG] Stripe session created:", session)
         return jsonify({"id": session.id, "url": session.url})
     except Exception as e:
+        print("[LOG] Exception in /create-checkout-session:", e)
         return jsonify({"error": str(e)}), 500
 
 @app.route("/webhook", methods=["POST"])
