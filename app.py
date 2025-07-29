@@ -57,8 +57,8 @@ def create_checkout_session():
                 "quantity": 1,
             }],
             mode="payment",
-            success_url="http://localhost:8000/success.html",
-            cancel_url="http://localhost:8000/cancel.html",
+            success_url="https://edtech-six-navy.vercel.app/success",
+            cancel_url="https://edtech-six-navy.vercel.app/cancel",
         )
         return jsonify({"id": session.id, "url": session.url})
     except Exception as e:
