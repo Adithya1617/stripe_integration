@@ -4,3 +4,4 @@ python-dotenv
 pymysql
 cryptography
 flask-dance[google] 
+flask_cors
